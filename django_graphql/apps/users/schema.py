@@ -112,12 +112,30 @@ class UpdateDeck(graphene.Mutation):
 
         return UpdateDeck(deck=deck)
 
+class DeleteDeck(graphene.Mutation):
+    success = graphene.Boolean()
+
+    class Arguments:
+        deck_id = graphene.ID(required=True)
+
+    def mutate(self, info, deck_id):
+        try:
+            deck = Deck.objects.get(pk=deck_id)
+        except Deck.DoesNotExist:
+            raise Exception("Deck not found")
+
+        if deck is not None:
+            deck.delete()
+
+        return DeleteDeck(success=True)
+
 class Mutation(graphene.ObjectType):
     create_card = CreateCard.Field()
     update_card = UpdateCard.Field()
     delete_card = DeleteCard.Field()
     create_deck = CreateDeck.Field()
     update_deck = UpdateDeck.Field()
+    delete_deck = DeleteDeck.Field()
 
 
 class Query(graphene.ObjectType):
