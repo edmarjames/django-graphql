@@ -20,19 +20,45 @@ class CardType(DjangoObjectType):
 
 
 class CreateCard(graphene.Mutation):
+    card = graphene.Field(CardType)
+
     class Arguments:
         deck_id = graphene.ID(required=True)
         question = graphene.String(required=True)
         answer = graphene.String(required=True)
         bucket = graphene.Int(required=True)
 
-    card = graphene.Field(CardType)
-
     def mutate(self, info, deck_id, question, answer, bucket):
         deck = Deck.objects.get(pk=deck_id)
         card = Card(deck=deck, question=question, answer=answer, bucket=bucket)
         card.save()
         return CreateCard(card=card)
+
+class UpdateCard(graphene.Mutation):
+    card = graphene.Field(CardType)
+
+    class Arguments:
+        card_id = graphene.ID(required=True)
+        question = graphene.String()
+        answer = graphene.String()
+        bucket = graphene.Int()
+
+    def mutate(self, info, card_id, question=None, answer=None, bucket=None):
+        try:
+            card = Card.objects.get(pk=card_id)
+        except Card.DoesNotExist:
+            raise Exception("Card not found")
+
+        if card is not None:
+            if question is not None:
+                card.question = question
+            if answer is not None:
+                card.answer = answer
+            if bucket is not None:
+                card.bucket = bucket
+            card.save()
+
+        return UpdateCard(card=card)
 
 class CreateDeck(graphene.Mutation):
     class Arguments:
@@ -48,7 +74,9 @@ class CreateDeck(graphene.Mutation):
 
 class Mutation(graphene.ObjectType):
     create_card = CreateCard.Field()
+    update_card = UpdateCard.Field()
     create_deck = CreateDeck.Field()
+
 
 
 class Query(graphene.ObjectType):
