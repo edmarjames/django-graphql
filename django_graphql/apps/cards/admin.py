@@ -3,7 +3,7 @@ from .models import Card
 
 
 class CardAdmin(admin.ModelAdmin):
-    list_display = ('deck', 'question', 'bucket')
+    list_display = ('id', 'deck', 'question', 'bucket')
 
 
 admin.site.register(Card, CardAdmin)
