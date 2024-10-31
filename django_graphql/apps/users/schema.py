@@ -28,16 +28,27 @@ class CreateCard(graphene.Mutation):
 
     card = graphene.Field(CardModel)
 
-    @classmethod
-    def mutate(cls, root, info, deck_id, question, answer, bucket):
+    def mutate(self, info, deck_id, question, answer, bucket):
         deck = Deck.objects.get(pk=deck_id)
         card = Card(deck=deck, question=question, answer=answer, bucket=bucket)
         card.save()
         return CreateCard(card=card)
 
+class CreateDeck(graphene.Mutation):
+    class Arguments:
+        title = graphene.String(required=True)
+        description = graphene.String(required=True)
+
+    deck = graphene.Field(DeckModel)
+
+    def mutate(self, info, title, description):
+        deck = Deck(title=title, description=description)
+        deck.save()
+        return CreateDeck(deck=deck)
 
 class Mutation(graphene.ObjectType):
     create_card = CreateCard.Field()
+    create_deck = CreateDeck.Field()
 
 
 class Query(graphene.ObjectType):
