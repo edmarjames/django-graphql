@@ -6,15 +6,15 @@ from apps.decks.models import Deck
 from apps.cards.models import Card
 
 
-class UserModel(DjangoObjectType):
+class UserType(DjangoObjectType):
     class Meta:
         model = User
 
-class DeckModel(DjangoObjectType):
+class DeckType(DjangoObjectType):
     class Meta:
         model = Deck
 
-class CardModel(DjangoObjectType):
+class CardType(DjangoObjectType):
     class Meta:
         model = Card
 
@@ -26,7 +26,7 @@ class CreateCard(graphene.Mutation):
         answer = graphene.String(required=True)
         bucket = graphene.Int(required=True)
 
-    card = graphene.Field(CardModel)
+    card = graphene.Field(CardType)
 
     def mutate(self, info, deck_id, question, answer, bucket):
         deck = Deck.objects.get(pk=deck_id)
@@ -39,7 +39,7 @@ class CreateDeck(graphene.Mutation):
         title = graphene.String(required=True)
         description = graphene.String(required=True)
 
-    deck = graphene.Field(DeckModel)
+    deck = graphene.Field(DeckType)
 
     def mutate(self, info, title, description):
         deck = Deck(title=title, description=description)
@@ -52,12 +52,12 @@ class Mutation(graphene.ObjectType):
 
 
 class Query(graphene.ObjectType):
-    users = graphene.List(UserModel)
-    decks = graphene.List(DeckModel)
-    decks_by_id = graphene.Field(DeckModel, id=graphene.Int())
-    cards = graphene.List(CardModel)
-    cards_by_id = graphene.Field(CardModel, id=graphene.Int())
-    deck_cards = graphene.List(CardModel, deck=graphene.Int())
+    users = graphene.List(UserType)
+    decks = graphene.List(DeckType)
+    decks_by_id = graphene.Field(DeckType, id=graphene.Int())
+    cards = graphene.List(CardType)
+    cards_by_id = graphene.Field(CardType, id=graphene.Int())
+    deck_cards = graphene.List(CardType, deck=graphene.Int())
 
     def resolve_users(self, info, **kwargs):
         return User.objects.all()
