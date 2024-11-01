@@ -29,9 +29,13 @@ class CreateCard(graphene.Mutation):
         bucket = graphene.Int(required=True)
 
     def mutate(self, info, deck_id, question, answer, bucket):
-        deck = Deck.objects.get(pk=deck_id)
-        card = Card(deck=deck, question=question, answer=answer, bucket=bucket)
-        card.save()
+        try:
+            deck = Deck.objects.get(pk=deck_id)
+            card = Card(deck=deck, question=question, answer=answer, bucket=bucket)
+            card.save()
+        except Deck.DoesNotExist:
+            raise Exception("Deck does not exist")
+
         return CreateCard(card=card)
 
 class UpdateCard(graphene.Mutation):
