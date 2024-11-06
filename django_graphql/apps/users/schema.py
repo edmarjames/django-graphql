@@ -4,7 +4,7 @@ from graphene_django import DjangoObjectType
 from .models import User
 from apps.decks.models import Deck
 from apps.cards.models import Card
-
+from graphql import GraphQLError
 
 class UserType(DjangoObjectType):
     class Meta:
@@ -34,7 +34,7 @@ class CreateCard(graphene.Mutation):
             card = Card(deck=deck, question=question, answer=answer, bucket=bucket)
             card.save()
         except Deck.DoesNotExist:
-            raise Exception("Deck does not exist")
+            raise GraphQLError("Deck does not exist")
 
         return CreateCard(card=card)
 
@@ -51,7 +51,7 @@ class UpdateCard(graphene.Mutation):
         try:
             card = Card.objects.get(pk=card_id)
         except Card.DoesNotExist:
-            raise Exception("Card not found")
+            raise GraphQLError("Card not found")
 
         if card is not None:
             if question is not None:
@@ -74,7 +74,7 @@ class DeleteCard(graphene.Mutation):
         try:
             card = Card.objects.get(pk=card_id)
         except Card.DoesNotExist:
-            raise Exception("Card not found")
+            raise GraphQLError("Card not found")
 
         if card is not None:
             card.delete()
@@ -105,7 +105,7 @@ class UpdateDeck(graphene.Mutation):
         try:
             deck = Deck.objects.get(pk=deck_id)
         except Deck.DoesNotExist:
-            raise Exception("Deck not found")
+            raise GraphQLError("Deck not found")
 
         if deck is not None:
             if title is not None:
@@ -126,7 +126,7 @@ class DeleteDeck(graphene.Mutation):
         try:
             deck = Deck.objects.get(pk=deck_id)
         except Deck.DoesNotExist:
-            raise Exception("Deck not found")
+            raise GraphQLError("Deck not found")
 
         if deck is not None:
             deck.delete()
