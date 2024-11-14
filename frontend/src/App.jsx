@@ -4,7 +4,7 @@ import viteLogo              from '/vite.svg';
 import './App.css';
 
 // components
-import Cards from './components/Cards';
+import Cards                 from './components/Cards';
 
 
 function App() {
