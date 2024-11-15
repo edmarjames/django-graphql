@@ -8,3 +8,11 @@ export const getCards = gql`{
     answer
   }
 }`;
+
+export const getDecks = gql`{
+  decks {
+    id
+    title
+    description
+  }
+}`;
