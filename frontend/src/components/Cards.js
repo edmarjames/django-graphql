@@ -2,18 +2,10 @@
 import React                 from 'react';
 
 // external imports
-import {
-    gql,
-    useQuery,
-}                            from '@apollo/client';
+import { useQuery }          from '@apollo/client';
 
-const getCards = gql`{
-  cards {
-    id
-    question
-    answer
-  }
-}`;
+// internal imports
+import { getCards }          from '../utils/queries';
 
 export default function Cards() {
 
