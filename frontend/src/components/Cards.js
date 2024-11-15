@@ -20,12 +20,15 @@ export default function Cards() {
   if (error) return <p>Error: {error.message}</p>
 
   return (
-    data?.cards?.map(data => (
-      <div key={data?.id}>
-        <p>id: {data?.id}</p>
-        <p>question: {data?.question}</p>
-        <p>answer: {data?.answer}</p>
-      </div>
-    ))
+    <>
+      <h2>Cards</h2>
+      {data?.cards?.map(data => (
+        <ul key={data?.id}>
+          <li>id: {data?.id}</li>
+          <li>question: {data?.question}</li>
+          <li>answer: {data?.answer}</li>
+        </ul>
+      ))}
+    </>
   )
 };

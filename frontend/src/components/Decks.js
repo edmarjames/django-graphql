@@ -16,13 +16,16 @@ export default function Decks() {
   if (error) return <p>Error: {error.message}</p>
 
   return (
-    data?.decks?.map(data => (
-      <div key={data?.id}>
-        <p>id: {data?.id}</p>
-        <p>title: {data?.title}</p>
-        <p>description: {data?.description}</p>
-      </div>
-    ))
+    <>
+      <h2>Decks</h2>
+      {data?.decks?.map(data => (
+        <ul key={data?.id}>
+          <li>id: {data?.id}</li>
+          <li>title: {data?.title}</li>
+          <li>description: {data?.description}</li>
+        </ul>
+      ))}
+    </>
   )
 };
 
