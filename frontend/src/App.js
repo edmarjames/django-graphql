@@ -9,6 +9,7 @@ import {
 import                       './App.css';
 import Cards                  from './components/Cards';
 import Decks                  from './components/Decks';
+import CreateDecks            from './components/CreateDecks';
 
 
 const client = new ApolloClient({
@@ -23,6 +24,7 @@ function App() {
         <Cards/>
         <hr/>
         <Decks/>
+        <CreateDecks/>
       </div>
     </ApolloProvider>
   );
