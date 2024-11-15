@@ -23,11 +23,20 @@ export default function CreateDecks(props) {
     <form onSubmit={(e) => handleSubmit(e)}>
       <div>
         <label htmlFor="title">Title: </label>
-        <input type="text" name="title" ref={titleRef} onChange={(e) => handleChangeTitle(e)}/>
+        <input
+          ref={titleRef}
+          type="text"
+          name="title"
+          onChange={(e) => handleChangeTitle(e)}
+        />
       </div>
       <div>
         <label htmlFor="description">Description: </label>
-        <textarea name="description" ref={descriptionRef} onChange={(e) => handleChangeDescription(e)}/>
+        <textarea
+          ref={descriptionRef}
+          name="description"
+          onChange={(e) => handleChangeDescription(e)}
+        />
       </div>
       <button>Save</button>
     </form>
