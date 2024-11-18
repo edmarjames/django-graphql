@@ -17,6 +17,16 @@ export const getDecks = gql`{
   }
 }`;
 
+export const getDeck = gql`
+  query($id: Int) {
+    decksById(id: $id) {
+      id
+      title
+      description
+    }
+  }
+`
+
 export const addDeck = gql`
   mutation ($title: String!, $description: String!) {
     createDeck(title: $title, description: $description) {
