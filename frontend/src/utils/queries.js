@@ -9,6 +9,16 @@ export const getCards = gql`{
   }
 }`;
 
+export const getCardsByDeck = gql`
+  query($deck: Int) {
+    deckCards(deck: $deck) {
+      id
+      question
+      answer
+    }
+  }
+`;
+
 export const getDecks = gql`{
   decks {
     id

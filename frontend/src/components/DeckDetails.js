@@ -1,8 +1,17 @@
-import React                 from 'react';
+import React, {
+  useEffect
+}                            from 'react';
 
-import { NetworkStatus, useQuery }          from '@apollo/client';
+import {
+  NetworkStatus,
+  useLazyQuery,
+  useQuery,
+}                            from '@apollo/client';
 
-import { getDeck }           from '../utils/queries';
+import {
+  getCardsByDeck,
+  getDeck,
+}                            from '../utils/queries';
 
 
 export default function DeckDetails({ deckId }) {
@@ -12,17 +21,38 @@ export default function DeckDetails({ deckId }) {
     notifyOnNetworkStatusChange: true
   });
 
+  const [deckCards, { data: cardData }] = useLazyQuery(getCardsByDeck);
+
   if (!deckId) return <p>No selected deck yet.</p>
   if (networkStatus === NetworkStatus.refetch) return <p>Refetching...</p>
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error: {error.message}</p>
 
   return (
-    <div>
-      <button onClick={() => refetch()}>Refetch data</button>
-      <p>id: {data?.decksById?.id}</p>
-      <p>title: {data?.decksById?.title}</p>
-      <p>description: {data?.decksById?.description}</p>
-    </div>
+    <>
+      <div>
+        <button onClick={() => refetch()}>Refetch data</button>
+        <button onClick={() => deckCards({ variables: {deck: parseInt(data?.decksById?.id)}})}>Get related cards</button>
+        <p>id: {data?.decksById?.id}</p>
+        <p>title: {data?.decksById?.title}</p>
+        <p>description: {data?.decksById?.description}</p>
+      </div>
+      {cardData?.deckCards?.length > 0 && (
+        <div>
+          <h4>Related cards</h4>
+          {cardData?.deckCards?.map(data => (
+            <div key={data?.id}>
+              <p>Id: {data?.id}</p>
+              <p>Question: {data?.question}</p>
+              <p>Answer: {data?.answer}</p>
+              <hr/>
+            </div>
+          ))}
+        </div>
+      )}
+      {cardData?.deckCards?.length === 0 && (
+        <h4>No related cards</h4>
+      )}
+    </>
   )
 };
