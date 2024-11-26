@@ -25,7 +25,7 @@ export const getDeck = gql`
       description
     }
   }
-`
+`;
 
 export const addDeck = gql`
   mutation ($title: String!, $description: String!) {
