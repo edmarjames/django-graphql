@@ -7,7 +7,7 @@ import { getDeck }           from '../utils/queries';
 
 export default function DeckDetails({ deckId }) {
 
-  const { loading, error, data } = useQuery(getDeck, {
+  const { loading, error, data, refetch } = useQuery(getDeck, {
     variables: { id: deckId }
   });
 
@@ -17,6 +17,7 @@ export default function DeckDetails({ deckId }) {
 
   return (
     <div>
+      <button onClick={() => refetch()}>Refetch data</button>
       <p>id: {data?.decksById?.id}</p>
       <p>title: {data?.decksById?.title}</p>
       <p>description: {data?.decksById?.description}</p>
