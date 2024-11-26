@@ -1,17 +1,19 @@
 import React                 from 'react';
 
-import { useQuery }          from '@apollo/client';
+import { NetworkStatus, useQuery }          from '@apollo/client';
 
 import { getDeck }           from '../utils/queries';
 
 
 export default function DeckDetails({ deckId }) {
 
-  const { loading, error, data, refetch } = useQuery(getDeck, {
-    variables: { id: deckId }
+  const { loading, error, data, refetch, networkStatus } = useQuery(getDeck, {
+    variables: { id: deckId },
+    notifyOnNetworkStatusChange: true
   });
 
-  if (!data) return <p>No selected deck yet.</p>
+  if (!deckId) return <p>No selected deck yet.</p>
+  if (networkStatus === NetworkStatus.refetch) return <p>Refetching...</p>
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error: {error.message}</p>
 
