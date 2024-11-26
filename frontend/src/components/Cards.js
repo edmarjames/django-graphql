@@ -1,5 +1,5 @@
 // react imports
-import React, { useEffect }                 from 'react';
+import React, { useEffect }  from 'react';
 
 // external imports
 import { useQuery }          from '@apollo/client';

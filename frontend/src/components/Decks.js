@@ -1,5 +1,5 @@
 // react imports
-import React, { useState }                 from 'react';
+import React, { useState }   from 'react';
 
 // external imports
 import { useQuery }          from '@apollo/client';

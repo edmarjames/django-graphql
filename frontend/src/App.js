@@ -3,13 +3,13 @@ import {
   ApolloClient,
   ApolloProvider,
   InMemoryCache,
-}                             from '@apollo/client';
+}                            from '@apollo/client';
 
 // internal imports
 import                       './App.css';
-import Cards                  from './components/Cards';
-import Decks                  from './components/Decks';
-import CreateDecks            from './components/CreateDecks';
+import Cards                 from './components/Cards';
+import Decks                 from './components/Decks';
+import CreateDecks           from './components/CreateDecks';
 
 
 const client = new ApolloClient({

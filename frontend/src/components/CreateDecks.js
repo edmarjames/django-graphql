@@ -1,10 +1,10 @@
 // react imports
 import React, {
   useRef
-} from 'react';
+}                            from 'react';
 
 // external imports
-import { useMutation } from '@apollo/client';
+import { useMutation }       from '@apollo/client';
 
 // internal imports
 import { addDeck, getDecks } from '../utils/queries';
