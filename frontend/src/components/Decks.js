@@ -1,5 +1,7 @@
 // react imports
-import React, { useState }   from 'react';
+import React, {
+  useState
+}                            from 'react';
 
 // external imports
 import { useQuery }          from '@apollo/client';
@@ -7,6 +9,7 @@ import { useQuery }          from '@apollo/client';
 // internal imports
 import { getDecks }          from '../utils/queries';
 import DeckDetails           from './DeckDetails';
+
 
 export default function Decks() {
 
