@@ -1,6 +1,8 @@
 // react imports
 import React, {
-  useState
+  lazy,
+  Suspense,
+  useState,
 }                            from 'react';
 
 // external imports
@@ -8,7 +10,8 @@ import { useQuery }          from '@apollo/client';
 
 // internal imports
 import { getDecks }          from '../utils/queries';
-import DeckDetails           from './DeckDetails';
+import ErrorBoundary         from '../utils/ErrorBoundary';
+const DeckDetails =          lazy(() => import('./DeckDetails'));
 
 
 export default function Decks() {
@@ -32,7 +35,11 @@ export default function Decks() {
         </ul>
       ))}
       <h2>Deck Details here</h2>
-      <DeckDetails deckId={selectedDeck}/>
+      <ErrorBoundary fallback={<h3>No selected deck yet</h3>}>
+        <Suspense fallback={<h2>Loading...</h2>}>
+          {selectedDeck && <DeckDetails deckId={selectedDeck}/>}
+        </Suspense>
+      </ErrorBoundary>
     </>
   )
 };

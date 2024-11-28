@@ -1,12 +1,12 @@
 import React, {
   useEffect,
-  useState
+  useState,
 }                            from 'react';
 
 import {
   NetworkStatus,
   useLazyQuery,
-  useQuery,
+  useSuspenseQuery,
 }                            from '@apollo/client';
 
 import {
@@ -19,9 +19,8 @@ export default function DeckDetails({ deckId }) {
 
   const [relatedCards, setRelatedCards] = useState([]);
 
-  const { loading, error, data, previousData, refetch, networkStatus } = useQuery(getDeck, {
-    variables: { id: deckId },
-    notifyOnNetworkStatusChange: true,
+  const { error, data, previousData, refetch, networkStatus } = useSuspenseQuery(getDeck, {
+    variables: { id: deckId }
   });
 
   const [deckCards, { data: cardData }] = useLazyQuery(getCardsByDeck);
@@ -39,7 +38,6 @@ export default function DeckDetails({ deckId }) {
 
   if (!deckId) return <p>No selected deck yet.</p>
   if (networkStatus === NetworkStatus.refetch) return <p>Refetching...</p>
-  if (loading) return <p>Loading...</p>
   if (error) return <p>Error: {error.message}</p>
 
   return (
