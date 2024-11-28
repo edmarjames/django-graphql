@@ -1,5 +1,6 @@
 import React, {
-  useEffect
+  useEffect,
+  useState
 }                            from 'react';
 
 import {
@@ -16,12 +17,25 @@ import {
 
 export default function DeckDetails({ deckId }) {
 
-  const { loading, error, data, refetch, networkStatus } = useQuery(getDeck, {
+  const [relatedCards, setRelatedCards] = useState([]);
+
+  const { loading, error, data, previousData, refetch, networkStatus } = useQuery(getDeck, {
     variables: { id: deckId },
-    notifyOnNetworkStatusChange: true
+    notifyOnNetworkStatusChange: true,
   });
 
   const [deckCards, { data: cardData }] = useLazyQuery(getCardsByDeck);
+
+  useEffect(() => {
+    if (data?.decksById?.id !== previousData?.decksById?.id) {
+      setRelatedCards([]);
+    }
+  }, [data, previousData]);
+  useEffect(() => {
+    if (cardData?.deckCards?.length > 0) {
+      setRelatedCards(cardData?.deckCards);
+    };
+  }, [cardData]);
 
   if (!deckId) return <p>No selected deck yet.</p>
   if (networkStatus === NetworkStatus.refetch) return <p>Refetching...</p>
@@ -37,10 +51,10 @@ export default function DeckDetails({ deckId }) {
         <p>title: {data?.decksById?.title}</p>
         <p>description: {data?.decksById?.description}</p>
       </div>
-      {cardData?.deckCards?.length > 0 && (
+      {relatedCards?.length > 0 && (
         <div>
           <h4>Related cards</h4>
-          {cardData?.deckCards?.map(data => (
+          {relatedCards?.map(data => (
             <div key={data?.id}>
               <p>Id: {data?.id}</p>
               <p>Question: {data?.question}</p>
@@ -50,7 +64,7 @@ export default function DeckDetails({ deckId }) {
           ))}
         </div>
       )}
-      {cardData?.deckCards?.length === 0 && (
+      {relatedCards?.length === 0 && (
         <h4>No related cards</h4>
       )}
     </>
