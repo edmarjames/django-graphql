@@ -1,6 +1,7 @@
 // react imports
 import React, {
-  useRef
+  useRef,
+  useEffect,
 }                            from 'react';
 
 // external imports
@@ -14,7 +15,7 @@ export default function CreateDecks(props) {
 
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
-  const [createDeck, { data, loading, error }] = useMutation(addDeck, {
+  const [createDeck, { data, loading, error, reset }] = useMutation(addDeck, {
     refetchQueries: [
       getDecks
     ],
@@ -36,8 +37,21 @@ export default function CreateDecks(props) {
     });
   };
 
+  useEffect(() => {
+    console.log(loading);
+    console.log(error)
+  }, [loading, error]);
+  useEffect(() => {
+    console.log(createDeck.onCompleted);
+  }, [createDeck]);
+
   if (loading) return <div>loading...</div>
-  if (error) return <p>Error: {error.message}</p>
+  if (error) return (
+    <div>
+      <p>Error: {error.message}</p>
+      <button onClick={() => reset()}>Reset</button>
+    </div>
+  )
 
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
