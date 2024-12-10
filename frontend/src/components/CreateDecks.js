@@ -37,14 +37,6 @@ export default function CreateDecks(props) {
     });
   };
 
-  useEffect(() => {
-    console.log(loading);
-    console.log(error)
-  }, [loading, error]);
-  useEffect(() => {
-    console.log(createDeck.onCompleted);
-  }, [createDeck]);
-
   if (loading) return <div>loading...</div>
   if (error) return (
     <div>
